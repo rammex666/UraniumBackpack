@@ -1,0 +1,11 @@
+name: UraniumBackpack
+version: '${project.version}'
+main: fr.rammex.uraniumbackpack.UraniumBackpack
+commands:
+  test:
+    description: Test command
+    usage: /test
+    permission: test
+    aliases:
+    - t
+    - testcommand
