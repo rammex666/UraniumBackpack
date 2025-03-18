@@ -1,10 +1,11 @@
 package fr.rammex.uraniumbackpack;
 
+import fr.rammex.uraniumbackpack.database.sqlite.SQLiteManager;
 import fr.rammex.uraniumbackpack.version.VersionHandler;
-import fr.rammex.uraniumbackpack.version.VersionHandler_1_8;
-import fr.rammex.uraniumbackpack.version.VersionHandler_21_0;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public final class UraniumBackpack extends JavaPlugin {
 
@@ -14,7 +15,15 @@ public final class UraniumBackpack extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        //JAVA VERSION
         setupVersionHandler();
+
+        //CONFIG.YML
+        saveDefaultConfig();
+
+        //DATABASE
+        getDatabaseManager();
     }
 
     @Override
@@ -42,6 +51,13 @@ public final class UraniumBackpack extends JavaPlugin {
         } catch (Exception e) {
             getLogger().severe("Failed to initialize version handler: " + e.getMessage());
             getServer().getPluginManager().disablePlugin(this);
+        }
+    }
+
+    private void getDatabaseManager() {
+        if(getConfig().getBoolean("database.sqlite.enabled")) {
+            SQLiteManager sqLiteManager = new SQLiteManager("ubackpack", new File(getDataFolder(), "data.db"));
+            sqLiteManager.load();
         }
     }
 }
